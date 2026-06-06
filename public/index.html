@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Складской учет</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div>
+      <h1>Складской учет</h1>
+      <p>Веб-система учета товаров, операций и остатков</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="cards" id="reportCards"></section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Товары</h2>
+        <div class="actions">
+          <input id="searchInput" placeholder="Поиск по товару, партии, ячейке" />
+          <button id="lowStockBtn">Мин. остаток</button>
+          <button id="showAllBtn">Все</button>
+        </div>
+      </div>
+
+      <form id="productForm" class="grid-form">
+        <input name="sku" placeholder="Артикул" required />
+        <input name="name" placeholder="Наименование" required />
+        <input name="category" placeholder="Категория" required />
+        <input name="unit" placeholder="Ед. изм." required />
+        <input name="quantity" type="number" min="0" placeholder="Количество" required />
+        <input name="cell" placeholder="Ячейка" required />
+        <input name="batch" placeholder="Партия" required />
+        <input name="expiration_date" type="date" title="Срок годности" />
+        <input name="min_quantity" type="number" min="0" placeholder="Мин. остаток" />
+        <select name="status">
+          <option value="active">Активен</option>
+          <option value="blocked">Заблокирован</option>
+        </select>
+        <button type="submit">Добавить товар</button>
+      </form>
+
+      <h3 class="sub-title">Список товаров</h3>
+      <p class="hint"></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Артикул</th>
+              <th>Название</th>
+              <th>Категория</th>
+              <th>Кол-во</th>
+              <th>Ячейка</th>
+              <th>Партия</th>
+              <th>Срок годности</th>
+              <th>Мин.</th>
+              <th>Статус</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="productsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel two-columns">
+      <div>
+        <h2>Складская операция</h2>
+        <form id="movementForm" class="vertical-form">
+          <select name="product_id" id="movementProduct" required></select>
+          <select name="operation_type" required>
+            <option value="receipt">Приемка</option>
+            <option value="move">Перемещение</option>
+            <option value="writeoff">Списание</option>
+          </select>
+          <input name="quantity" type="number" min="1" placeholder="Количество" required />
+          <input name="to_cell" placeholder="Новая ячейка при перемещении" />
+          <textarea name="comment" placeholder="Комментарий"></textarea>
+          <button type="submit">Сохранить операцию</button>
+        </form>
+      </div>
+
+      <div>
+        <h2>Резервирование</h2>
+        <form id="reservationForm" class="vertical-form">
+          <select name="product_id" id="reservationProduct" required></select>
+          <input name="quantity" type="number" min="1" placeholder="Количество" required />
+          <input name="customer" placeholder="Получатель / заказчик" required />
+          <button type="submit">Создать резерв</button>
+        </form>
+
+        <h3 class="sub-title">Активные резервы</h3>
+        <ul id="reservationsList" class="list reserve-list"></ul>
+      </div>
+    </section>
+
+    <section class="panel two-columns">
+      <div>
+        <h2>Инвентаризация</h2>
+        <form id="inventoryForm" class="vertical-form">
+          <select name="product_id" id="inventoryProduct" required></select>
+          <input name="new_quantity" type="number" min="0" placeholder="Фактическое количество" required />
+          <textarea name="comment" placeholder="Комментарий"></textarea>
+          <button type="submit">Провести инвентаризацию</button>
+        </form>
+      </div>
+
+      <div>
+        <h2>Последние операции</h2>
+        <ul id="movementsList" class="list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
